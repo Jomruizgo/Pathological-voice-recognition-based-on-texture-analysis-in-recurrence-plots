@@ -65,7 +65,6 @@ data/
 *.bmp
 
 # CSV and JSON outputs (keep configs)
-**/features/*.csv
 **/metrics/*.json
 **/results_*.json
 !config.json
