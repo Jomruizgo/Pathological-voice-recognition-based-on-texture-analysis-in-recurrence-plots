@@ -1,0 +1,166 @@
+% Tabla para justificar Cohen's d >= 0.2 en artículo científico
+% Incluir en sección de Metodología o Resultados
+
+% Paquetes necesarios:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{xcolor,colortbl}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación experimental del impacto del umbral de Cohen's d en selección de características y performance de clasificación. Experimento controlado con mismo dataset (n=440), random\_state=42, split 80/20.}
+\label{tab:cohens_d_comparison}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Métrica} & \textbf{Fase} & \textbf{06-C (d $\geq$ 0.2)} & \textbf{06-D (d $\geq$ 0.5)} & \textbf{$\Delta$} \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{Selección de Características}}} \\
+Características iniciales & - & 181 & 181 & - \\
+Significativas (p < 0.05) & Fase 1 & 79 & 79 & - \\
+Relevantes (Cohen's d) & Fase 2 & \textbf{61} & \textbf{13} & \textcolor{red}{-78.7\%} \\
+\quad Efecto pequeño (0.2 $\leq$ d < 0.5) & & 23 & 0 & -23 \\
+\quad Efecto mediano (0.5 $\leq$ d < 0.8) & & 38 & 13 & -25 \\
+Post-redundancia (r < 0.85) & Fase 4 & \textbf{15} & \textbf{5} & -66.7\% \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{Validación de Separabilidad (Fase 5)}}} \\
+Silhouette Score & & 0.520 & 0.079 & -84.8\% \\
+Fisher Ratio & & 2.30 & 0.674 & -70.7\% \\
+PCA Variance Explained & & 87\% & 100\%\textsuperscript{*} & - \\
+Estado de Validación & & \textcolor{green!60!black}{\textbf{APROBADA}} & \textcolor{red}{\textbf{FALLIDA}} & - \\
+\midrule
+\multicolumn{5}{l}{\textit{\textbf{Performance de Clasificación (Mejor Configuración)}}} \\
+Subset Óptimo & & TOP\_10 & TOP\_5 & - \\
+N Características & & 10 & 5 & +5 \\
+Mejor Modelo & & Random Forest & SVM & - \\
+Accuracy (\%) & & \textbf{81.82} & 80.68 & +1.14\% \\
+F1-Score & & \textbf{0.8185} & 0.8041 & +1.79\% \\
+ROC-AUC & & \textbf{0.9005} & 0.7781 & \textcolor{green!60!black}{\textbf{+15.7\%}} \\
+Diversidad (tipos descriptores) & & 5 & 2 & +3 \\
+\bottomrule
+\end{tabular}
+\vspace{0.2cm}
+
+\footnotesize
+\textsuperscript{*}100\% porque solo 5 características = 5 componentes principales.
+
+\textbf{Interpretación}: El umbral d $\geq$ 0.2 resulta en mejor generalización (ROC-AUC +15.7\%), mayor diversidad de características, y aprueba todas las métricas de validación de separabilidad. El umbral d $\geq$ 0.5 es excesivamente restrictivo, rechazando 78.7\% de características significativas y produciendo un subset con separabilidad geométrica pobre.
+\end{table}
+
+
+% ============================================================================
+% TABLA ALTERNATIVA (MÁS CONCISA)
+% ============================================================================
+
+\begin{table}[htbp]
+\centering
+\caption{Justificación del umbral Cohen's d $\geq$ 0.2: Comparación experimental.}
+\label{tab:cohens_d_justification_compact}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Aspecto} & \textbf{d $\geq$ 0.2 (06-C)} & \textbf{d $\geq$ 0.5 (06-D)} & \textbf{Ganador} \\
+\midrule
+\textit{Selección} & & & \\
+Características Fase 2 & 61 & 13 (-78.7\%) & 06-C \\
+Características Final & 15 & 5 (-66.7\%) & 06-C \\
+\midrule
+\textit{Validación} & & & \\
+Silhouette Score & 0.520 & 0.079 & \textbf{06-C} \\
+Fisher Ratio & 2.30 & 0.674 & \textbf{06-C} \\
+Estado & \textcolor{green!60!black}{APROBADA} & \textcolor{red}{FALLIDA} & \textbf{06-C} \\
+\midrule
+\textit{Performance (TOP\_10 vs TOP\_5)} & & & \\
+F1-Score & \textbf{0.8185} & 0.8041 & 06-C (+1.8\%) \\
+ROC-AUC & \textbf{0.9005} & 0.7781 & \textbf{06-C (+15.7\%)} \\
+Diversidad descriptores & 5 tipos & 2 tipos & \textbf{06-C} \\
+\bottomrule
+\end{tabular}
+\vspace{0.2cm}
+
+\footnotesize
+\textbf{Conclusión}: d $\geq$ 0.2 ofrece mejor balance entre inclusividad de efectos reales y rechazo de efectos triviales, resultando en superior generalización (AUC > 90\%) y validación aprobada.
+\end{table}
+
+
+% ============================================================================
+% TEXTO PARA METODOLOGÍA
+% ============================================================================
+
+% Insertar este párrafo en la sección de Metodología, subsección de Selección de Características:
+
+\textbf{Justificación del umbral de Cohen's d.}
+En la Fase 2 de nuestro pipeline, adoptamos un umbral de Cohen's d $\geq$ 0.2 para filtrar características por relevancia práctica, en lugar del umbral convencional de d $\geq$ 0.5 propuesto por Cohen (1988). Esta decisión se fundamenta en tres argumentos:
+
+\textit{Primero}, Cohen mismo advirtió que sus convenciones son ``valores guía arbitrarios'' que deben interpretarse según el contexto del dominio \cite{Cohen1988}. En el análisis de señales biomédicas, efectos pequeños (d $\geq$ 0.2) son frecuentemente clínicamente significativos \cite{Sullivan2012,Lakens2013}.
+
+\textit{Segundo}, las señales de voz presentan alta variabilidad intrínseca debido a diferencias anatómicas inter-sujeto, condiciones de grabación y el espectro continuo de severidad patológica. En este contexto, diferencias con efecto pequeño pueden representar indicadores tempranos de patología con valor discriminativo real \cite{GodinoLlorente2006,Arjmandi2011}.
+
+\textit{Tercero}, nuestro pipeline multi-fase compensa la permisividad del umbral mediante: (i) ranking por poder discriminativo combinado (F-Score + MI), (ii) eliminación de redundancia (r < 0.85), y (iii) validación de separabilidad (PCA, Silhouette, Fisher). Para validar esta elección, comparamos experimentalmente d $\geq$ 0.2 vs d $\geq$ 0.5 con el mismo dataset (random\_state=42). Como se muestra en la Tabla~\ref{tab:cohens_d_comparison}, el umbral d $\geq$ 0.2 resultó en mejor generalización (AUC: 0.9005 vs 0.7781, +15.7\%) y aprobó todos los criterios de validación, mientras que d $\geq$ 0.5 generó un subset con separabilidad geométrica pobre (Silhouette: 0.079, Fisher: 0.674). Por tanto, d $\geq$ 0.2 representa el balance óptimo para este dominio.
+
+
+% ============================================================================
+% REFERENCIAS BIBLIOGRÁFICAS (BibTeX)
+% ============================================================================
+
+@book{Cohen1988,
+  author    = {Cohen, Jacob},
+  title     = {Statistical Power Analysis for the Behavioral Sciences},
+  edition   = {2nd},
+  publisher = {Lawrence Erlbaum Associates},
+  year      = {1988},
+  address   = {Hillsdale, NJ}
+}
+
+@article{Sullivan2012,
+  author  = {Sullivan, Gail M. and Feinn, Richard},
+  title   = {Using Effect Size—or Why the P Value Is Not Enough},
+  journal = {Journal of Graduate Medical Education},
+  year    = {2012},
+  volume  = {4},
+  number  = {3},
+  pages   = {279--282},
+  doi     = {10.4300/JGME-D-12-00156.1}
+}
+
+@article{Lakens2013,
+  author  = {Lakens, Daniël},
+  title   = {Calculating and Reporting Effect Sizes to Facilitate Cumulative Science: A Practical Primer for t-tests and ANOVAs},
+  journal = {Frontiers in Psychology},
+  year    = {2013},
+  volume  = {4},
+  pages   = {863},
+  doi     = {10.3389/fpsyg.2013.00863}
+}
+
+@article{GodinoLlorente2006,
+  author  = {Godino-Llorente, Juan I. and Gómez-Vilda, Pedro and Blanco-Velasco, Manuel},
+  title   = {Dimensionality Reduction of a Pathological Voice Quality Assessment System Based on Gaussian Mixture Models and Short-Term Cepstral Parameters},
+  journal = {IEEE Transactions on Biomedical Engineering},
+  year    = {2006},
+  volume  = {53},
+  number  = {10},
+  pages   = {1943--1953},
+  doi     = {10.1109/TBME.2006.871883}
+}
+
+@article{Arjmandi2011,
+  author  = {Arjmandi, Mona K. and Pooyan, Morteza and Mikaili, Mansour and Vali, Mehdi and Moqarehzadeh, Ahmad},
+  title   = {Identification of Voice Disorders Using Long-Time Features and Support Vector Machine With Different Feature Reduction Methods},
+  journal = {Journal of Voice},
+  year    = {2011},
+  volume  = {25},
+  number  = {6},
+  pages   = {e275--e289},
+  doi     = {10.1016/j.jvoice.2010.08.003}
+}
+
+@article{Sawilowsky2009,
+  author  = {Sawilowsky, Shlomo S.},
+  title   = {New Effect Size Rules of Thumb},
+  journal = {Journal of Modern Applied Statistical Methods},
+  year    = {2009},
+  volume  = {8},
+  number  = {2},
+  pages   = {597--599},
+  doi     = {10.22237/jmasm/1257035100}
+}

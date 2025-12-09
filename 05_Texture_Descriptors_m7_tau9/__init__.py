@@ -1,0 +1,1 @@
+# Módulo de extracción de descriptores de textura

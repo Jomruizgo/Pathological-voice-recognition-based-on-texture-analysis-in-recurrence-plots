@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Output directories
+**/output/
+!**/output/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Data files
+data/
+*.wav
+*.mp3
+*.flac
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+
+# CSV and JSON outputs (keep configs)
+**/features/*.csv
+**/metrics/*.json
+**/results_*.json
+!config.json
+!feature_ranking.json
+!manifest.json
+
+# Checkpoints
+**/checkpoints/
+*.checkpoint
+checkpoint.json
+processing_history.json
+
+# Models
+**/models/
+*.pkl
+*.h5
+*.pt
+*.pth
+*.onnx
+*.joblib
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Cache
+.cache/
+*.cache

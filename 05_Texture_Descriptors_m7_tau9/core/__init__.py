@@ -1,0 +1,1 @@
+# Core components for texture descriptor extraction
